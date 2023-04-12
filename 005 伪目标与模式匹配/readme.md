@@ -131,3 +131,34 @@ ding@linux:~/makefile/005$ make show
 add.c main.c mul.c sub.c
 add.o main.o mul.o sub.o
 ```
+## 模式匹配 foreach
+
+*$(foreach n, $(names), $(n).o)*
+
+![](https://ding-aliyun.oss-cn-shenzhen.aliyuncs.com/s3c2440/5.4_foreach.png)
+
+```mk
+# 获取所有.c文件
+ALL_C_FILE=$(wildcard *.c)
+
+# 去掉.c文件的后缀，只保留文件名
+ALL_FILE=$(patsubst %.c, %, $(ALL_C_FILE))
+
+# 把文件名都增加上.o后缀
+ALL_O_FILE=$(foreach n, $(ALL_FILE), $(n).o)
+
+.PHONY:show
+show:
+	@echo $(ALL_C_FILE)
+	@echo $(ALL_FILE)
+	@echo $(ALL_O_FILE)
+```
+
+*执行结果*
+
+```sh
+ding@linux:~/makefile/005$ make show
+add.c main.c mul.c sub.c
+add main mul sub
+add.o main.o mul.o sub.o
+```
